@@ -5,6 +5,9 @@ require 'active_record'
 require 'eventmachine'
 require 'json'
 
+dbpath = '../BioBoardSite/db/dev.sqlite'
+
+
 $outputs = []
 
 class Project < ActiveRecord::Base
@@ -208,6 +211,10 @@ class BioBoardHandler
       
       probe = Probe.joins(:probe_type).where(["probe_types.name = ? and arduino_name = ? and project_id = ?", probe_type_name, arduino_name, @project.id]).find(:first)
 
+      if probe
+        puts "probe find: #{probe.id} with project: #{probe.project_id}"
+      end
+
       if !probe
         probe_type = ProbeType.find_by_name(probe_type_name)
         if !probe_type
@@ -220,6 +227,8 @@ class BioBoardHandler
         probe.probe_type_id = probe_type.id
         probe.arduino_name = arduino_name
         probe.save!
+        puts "Probe created: #{probe.project_id}"
+
       end
 
       @probes << probe
@@ -403,7 +412,7 @@ end
 
 ActiveRecord::Base.establish_connection(
                                         :adapter  => 'sqlite3',
-                                        :database => '../test.sqlite',
+                                        :database => dbpath,
                                         :pool => 5,
                                         :timeout => 5000)
 
