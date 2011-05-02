@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
-
 require 'socket'
+
+project_name = 'BATCH1'
 
 host = 'localhost'
 port = 9090
@@ -24,15 +25,15 @@ def probe_enumeration
   str += format_msg("PREND")
 end
 
-def project_identification
-  format_msg("PROJ:BATCH1")
+def project_identification(project_name)
+  format_msg("PROJ:#{project_name}")
 end
 
 s = TCPSocket.open(host, port)
 
 s.send(header, 0)
 
-s.send(project_identification, 0)
+s.send(project_identification(project_name), 0)
 
 s.send(probe_enumeration, 0)
 
