@@ -92,9 +92,12 @@ class JSONPHandler
   end
 
   def handle(ndata)
+    
+    puts "-------jsonp data"
+
     @data += ndata
     if @data.index(@req_end)
-      puts "jsonp got double newline"
+      puts "==== jsonp got double newline"
       send_init_response
       @state = :ready
     end
@@ -272,7 +275,11 @@ class BioBoardHandler
   end
 
   def handle(ndata)
+
     begin
+      ndata = ndata.gsub("\n", '')
+      ndata = ndata.gsub("\r", '')
+
       while(ndata.length > 0)
 
         if @state == :error
@@ -363,9 +370,6 @@ class MessageConnection < EM::Connection
   def receive_data(ndata)
 
     begin
-
-      ndata = ndata.gsub("\n", '')
-      ndata = ndata.gsub("\r", '')
 
       puts "got: " + ndata.inspect
 

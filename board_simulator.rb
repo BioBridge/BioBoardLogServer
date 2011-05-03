@@ -5,7 +5,7 @@ project_name = 'BATCH1'
 
 host = 'localhost'
 port = 9090
-header = "!BIOBOARD:0.1"
+header = "!BIOBOARD:0.1\n"
 
 
 def format_msg(str)
